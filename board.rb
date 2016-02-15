@@ -2,6 +2,8 @@ class InvalidMoveError < StandardError
 end
 
 class Board
+  attr_reader :grid
+
   def initialize
     @grid = Array.new(8) { Array.new(8) }
   end
@@ -18,7 +20,7 @@ class Board
 
   def move(start_pos, end_pos)
     begin
-      unless self[start_pos] && valid_move?(start_pos, end_pos)
+      unless self[start_pos] && in_bounds?(start_pos, end_pos)
         raise InvalidMoveError("Invalid move")
       end
     end
@@ -27,9 +29,9 @@ class Board
     self[start_pos] = nil
   end
 
-  private
+  #private
 
-  def valid_move?(start_pos, end_pos)
+  def in_bounds?(start_pos, end_pos = [])
     (start_pos + end_pos).all? { |coord| coord.between?(0, 7) }
   end
 
