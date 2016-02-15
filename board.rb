@@ -1,5 +1,4 @@
 class InvalidMoveError < StandardError
-
 end
 
 class Board
@@ -24,17 +23,14 @@ class Board
       end
     end
 
-      self[end_pos] = self[start_pos]
-      self[start_pos] = nil
+    self[end_pos] = self[start_pos]
+    self[start_pos] = nil
   end
-
-
 
   private
 
   def valid_move?(start_pos, end_pos)
     (start_pos + end_pos).all? { |coord| coord.between?(0, 7) }
   end
-
 
 end
