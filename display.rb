@@ -32,22 +32,22 @@ class Display
     if [i, j] == @cursor_pos
       bg = :light_red
     elsif (i + j).odd?
-      bg = :light_blue
+      bg = :white
     else
-      bg = :blue
+      bg = :black
     end
-    { background: bg, color: :white }
+    { background: bg }
   end
 
   def render
     system("clear")
-    puts "Fill the grid!"
-    puts "Arrow keys, WASD, or vim to move, space or enter to confirm."
     build_grid.each { |row| puts row.join }
   end
 end
+b = Board.new
+b.populate
 
-test = Display.new(Board.new)
+test = Display.new(b)
 result = nil
 
 until result

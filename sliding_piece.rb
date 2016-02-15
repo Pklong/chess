@@ -1,20 +1,14 @@
 class SlidingPiece < Piece
   DELTA = [1, -1]
 
-  def initialize(pos, board, color, dir)
-    super(pos, board, color)
-    @dir = dir
+  def moves
+    move_dirs
   end
 
   def move_dirs
-    if @dir == :d
-      diagonal_moves
-    elsif @dir == :h
-      horizontal_vertical_moves
-    else
-      diagonal_moves + horizontal_vertical_moves
-    end
+    raise MoveError.new("Shouldn't be here")
   end
+
 
   private
 
