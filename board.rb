@@ -1,3 +1,7 @@
+class InvalidMoveError < StandardError
+
+end
+
 class Board
   def initialize
     @grid = Array.new(8) { Array.new(8) }
@@ -14,10 +18,17 @@ class Board
   end
 
   def move(start_pos, end_pos)
-    valid_move?(start_pos, end_pos)
+    begin
+      unless self[start_pos] && valid_move?(start_pos, end_pos)
+        raise InvalidMoveError("Invalid move")
+      end
+    end
+
+      self[end_pos] = self[start_pos]
+      self[start_pos] = nil
   end
 
-  
+
 
   private
 
