@@ -21,9 +21,9 @@ class Display
     row.map.with_index do |piece, j|
       color_options = colors_for(i, j)
       if piece
-        piece.to_s.colorize(color_options)
+        " #{piece} ".colorize(color_options)
       else
-        " ".to_s.colorize(color_options)
+        "   ".to_s.colorize(color_options)
       end
     end
   end

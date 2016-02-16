@@ -1,5 +1,4 @@
 class King < SteppingPiece
-  DELTA = [-1, 1]
 
   def moves
     moves = []

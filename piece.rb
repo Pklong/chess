@@ -2,6 +2,7 @@ class MoveError < StandardError
 end
 
 class Piece
+  DELTA = [1, -1]
 
   def initialize(pos, board, color)
     @pos = pos
@@ -23,5 +24,5 @@ class Piece
 
   protected
   attr_reader :color
-  
+
 end

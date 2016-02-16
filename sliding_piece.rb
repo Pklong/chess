@@ -1,5 +1,5 @@
 class SlidingPiece < Piece
-  DELTA = [1, -1]
+  
 
   def moves
     move_dirs
