@@ -1,5 +1,5 @@
 class SlidingPiece < Piece
-  
+
 
   def moves
     move_dirs
@@ -43,17 +43,3 @@ class SlidingPiece < Piece
   end
 
 end
-
-
-# 4 times
-# my_row, col changing positive
-# my_row, col changing negative
-# row changing postive, my_col
-# row changing negative, my_col
-
-# if friendly, end one before
-# if enemy, end there
-
-#increment
-#check if occupied
-#if occupied friendly

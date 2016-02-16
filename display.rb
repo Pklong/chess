@@ -1,15 +1,11 @@
-require "colorize"
-require_relative "cursorable"
-require_relative "board"
-
 class Display
   include Cursorable
+  attr_reader :selected
 
   def initialize(board, debug = false)
     @board = board
     @cursor_pos = [0, 0]
-    @selected = false
-    @move_set = []
+    @selected = [0,0]
     @debug = debug
   end
 
@@ -34,44 +30,25 @@ class Display
     if [i, j] == @cursor_pos
       bg = :light_red
     elsif (i + j).odd?
-      bg = :black
+      bg = :light_black
     else
       bg = :white
     end
-    { background: bg }
+    { background: bg, color: :black }
   end
 
   def render
     system("clear")
     build_grid.each { |row| puts row.join }
     if @debug
+
       puts "Cursor_pos: #{@cursor_pos}"
       puts "selected: #{@selected}"
-      puts "move_set: #{@move_set}"
-      if @move_set[0]
-        puts "moves for selected piece: #{@board[@move_set[0]].moves}"
-        puts "Valid moves for: #{@board[@move_set[0]].valid_moves}"
+      if @board[@selected]
+        puts "moves for selected piece: #{@board[@selected].valid_moves}"
       end
       puts "Is white in check? #{@board.in_check?(:w)}"
       puts "Is white in checkmate? #{@board.checkmate?(:w)}"
     end
   end
-
-  def run
-    while true
-      until @move_set.length == 2
-        render
-        get_input
-      end
-
-      @board.move(@move_set[0], @move_set[1])
-      @move_set = []
-    end
-
-  end
 end
-b = Board.new
-b.populate
-
-test = Display.new(b, true)
-test.run

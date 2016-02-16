@@ -13,6 +13,7 @@ module Cursorable
     "\e[B" => :down,
     "\e[C" => :right,
     "\e[D" => :left,
+    "\u0003" => :ctrl_c
   }
 
   MOVES = {
@@ -32,8 +33,8 @@ module Cursorable
     when :ctrl_c
       exit 0
     when :return, :space
-      @board[@cursor_pos] ? @selected = true : @selected = false
-      @move_set << @cursor_pos
+      @selected = @cursor_pos
+      @cursor_pos
     when :left, :right, :up, :down
       update_pos(MOVES[key])
       nil

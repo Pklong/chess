@@ -1,13 +1,4 @@
-require_relative 'errors'
-require_relative 'piece'
-require_relative 'sliding_piece'
-require_relative 'stepping_piece'
-require_relative 'rook'
-require_relative 'bishop'
-require_relative 'queen'
-require_relative 'knight'
-require_relative 'king'
-require_relative 'pawn'
+
 
 class Board
   attr_reader :grid
@@ -61,10 +52,11 @@ class Board
     enemy_pieces.any? { |piece| piece.moves.include?(king_pos) }
   end
 
-  def move(start_pos, end_pos)
-    unless self[start_pos] || !self[start_pos].valid_moves.include?(end_pos)
-      raise InvalidMoveError("Invalid move")
+  def move(start_pos, end_pos, color)
+    unless self[start_pos] && self[start_pos].valid_moves.include?(end_pos)
+      raise InvalidMoveError.new("Invalid move")
     end
+    raise InvalidMoveError.new("Not your piece") if color != self[start_pos].color
 
     move!(start_pos, end_pos)
   end

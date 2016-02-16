@@ -8,11 +8,10 @@ class Knight < SteppingPiece
             [1, 2],
             [2, -1],
             [2, 1]
-            ]
+          ]
 
   def moves
-    moves = DELTA.map { |dx, dy| [(@pos[0] + dx), (@pos[1] + dy)] }
-    moves.reject { |pos| !@board.in_bounds?(pos) || is_friend?(pos) }
+    stepping_moves(DELTA)
   end
 
   def to_s
