@@ -1,6 +1,3 @@
-class MoveError < StandardError
-end
-
 class Piece
   attr_reader :color
   attr_accessor :pos
@@ -13,7 +10,15 @@ class Piece
   end
 
   def moves
-    raise MoveError.new("Shouldn't have happened!")
+    raise MoveError.new("Subclasses should implement #move.")
+  end
+
+  def valid_moves
+    moves.reject do |end_pos|
+      dupped_board = @board.dup
+      dupped_board.move!(@pos, end_pos)
+      dupped_board.in_check?(@color)
+    end
   end
 
   private

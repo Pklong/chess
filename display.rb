@@ -50,8 +50,10 @@ class Display
       puts "move_set: #{@move_set}"
       if @move_set[0]
         puts "moves for selected piece: #{@board[@move_set[0]].moves}"
+        puts "Valid moves for: #{@board[@move_set[0]].valid_moves}"
       end
       puts "Is white in check? #{@board.in_check?(:w)}"
+      puts "Is white in checkmate? #{@board.checkmate?(:w)}"
     end
   end
 

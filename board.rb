@@ -1,3 +1,4 @@
+require_relative 'errors'
 require_relative 'piece'
 require_relative 'sliding_piece'
 require_relative 'stepping_piece'
@@ -7,10 +8,6 @@ require_relative 'queen'
 require_relative 'knight'
 require_relative 'king'
 require_relative 'pawn'
-
-
-class InvalidMoveError < StandardError
-end
 
 class Board
   attr_reader :grid
@@ -65,12 +62,14 @@ class Board
   end
 
   def move(start_pos, end_pos)
-    begin
-      unless self[start_pos] && in_bounds?(start_pos, end_pos)
-        raise InvalidMoveError("Invalid move")
-      end
+    unless self[start_pos] || !self[start_pos].valid_moves.include?(end_pos)
+      raise InvalidMoveError("Invalid move")
     end
 
+    move!(start_pos, end_pos)
+  end
+
+  def move!(start_pos, end_pos)
     self[end_pos] = self[start_pos]
     self[end_pos].pos = end_pos
     self[start_pos] = nil
@@ -100,6 +99,20 @@ class Board
     8.times do |col|
       self[[row, col]] = Pawn.new([row, col], self, color)
     end
+  end
+
+  def dup
+    duped_board = Board.new
+
+    @grid.each_with_index do |row, row_i|
+      row.each_with_index do |piece, col_i|
+        if piece
+          new_piece = piece.class.new([row_i, col_i], duped_board, piece.color)
+          duped_board[[row_i, col_i]] = new_piece
+        end
+      end
+    end
+    duped_board
   end
 
 end
