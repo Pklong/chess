@@ -29,10 +29,40 @@ class Board
     @grid[row][col] = piece
   end
 
+  def checkmate?(color)
+    get_all_color_pieces(color).none? { |piece| piece.valid_moves.any? }
+  end
+
+  def find_king(color)
+    @grid.each do |row|
+      row.each do |piece|
+        return piece.pos if piece.is_a?(King) && piece.color == color
+      end
+    end
+  end
+
+  def get_all_color_pieces(color)
+    pieces = []
+    @grid.each do |row|
+      row.each do |piece|
+        pieces << piece if piece && piece.color == color
+      end
+    end
+
+    pieces
+  end
+
   def in_bounds?(start_pos, end_pos = [])
     (start_pos + end_pos).all? { |coord| coord.between?(0, 7) }
   end
 
+  def in_check?(color)
+    king_pos = find_king(color)
+    color == :w ? opponent_color = :b : opponent_color = :w
+    enemy_pieces = get_all_color_pieces(opponent_color)
+
+    enemy_pieces.any? { |piece| piece.moves.include?(king_pos) }
+  end
 
   def move(start_pos, end_pos)
     begin

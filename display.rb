@@ -44,11 +44,14 @@ class Display
   def render
     system("clear")
     build_grid.each { |row| puts row.join }
-    puts "Cursor_pos: #{@cursor_pos}"
-    puts "selected: #{@selected}"
-    puts "move_set: #{@move_set}"
-    if @move_set[0]
-      puts "moves for selected piece: #{@board[@move_set[0]].moves}"
+    if @debug
+      puts "Cursor_pos: #{@cursor_pos}"
+      puts "selected: #{@selected}"
+      puts "move_set: #{@move_set}"
+      if @move_set[0]
+        puts "moves for selected piece: #{@board[@move_set[0]].moves}"
+      end
+      puts "Is white in check? #{@board.in_check?(:w)}"
     end
   end
 

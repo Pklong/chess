@@ -2,7 +2,8 @@ class MoveError < StandardError
 end
 
 class Piece
-  attr_writer :pos
+  attr_reader :color
+  attr_accessor :pos
   DELTA = [1, -1]
 
   def initialize(pos, board, color)
@@ -24,8 +25,5 @@ class Piece
   def is_friend?(pos)
     @board[pos] && @board[pos].color == @color
   end
-
-  protected
-  attr_reader :color
 
 end
