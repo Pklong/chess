@@ -74,6 +74,14 @@ class Board
     end
   end
 
+  def promotion
+    (@grid.first + @grid.last).each do |piece|
+      return piece if piece.is_a?(Pawn)
+    end
+
+    nil
+  end
+
   def populate_back_row(color)
     color == :b ? row = 0 : row = 7
     self[[row, 0]] = Rook.new([row, 0], self, color)

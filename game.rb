@@ -48,6 +48,29 @@ class Game
     end
 
     @board.move(moves_set[0], moves_set[1], @players[0])
+    promotion_piece = @board.promotion
+    promote(promotion_piece) if promotion_piece
+  end
+
+  def promote(piece)
+    puts "Promote pawn to which piece? (Q, R, K, B)"
+    choice = gets.chomp.upcase
+    case choice
+    when "Q"
+      @board[piece.pos] = Queen.new(piece.pos, @board, piece.color)
+    when "R"
+      @board[piece.pos] = Rook.new(piece.pos, @board, piece.color)
+    when "K"
+      @board[piece.pos] = Knight.new(piece.pos, @board, piece.color)
+    when "B"
+      @board[piece.pos] = Bishop.new(piece.pos, @board, piece.color)
+    else
+      raise InputError.new("That's not a valid choice.")
+    end
+  rescue InputError => e
+    puts e.message
+    puts "try again"
+    retry
   end
 
   def swap_current_player!

@@ -5,11 +5,7 @@ class Queen < SlidingPiece
   end
 
   def to_s
-    if @color == :w
-      "\u2655"
-    else
-      "\u265B"
-    end
+    @color == :w ? "\u2655" : "\u265B"
   end
 
 end

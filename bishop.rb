@@ -5,11 +5,7 @@ class Bishop < SlidingPiece
   end
 
   def to_s
-    if @color == :w
-      "\u2657"
-    else
-      "\u265D"
-    end
+    @color == :w ? "\u2657" : "\u265D"
   end
 
 end
