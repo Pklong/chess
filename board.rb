@@ -17,6 +17,38 @@ class Board
     @grid[row][col] = piece
   end
 
+  def castling?(king_pos, rook_pos)
+    self[king_pos].class == King &&
+    self[rook_pos].class == Rook &&
+    self[king_pos].color == self[rook_pos].color &&
+    (!self[king_pos].moved && !self[rook_pos].moved)
+  end
+
+  def castle(king_pos, rook_pos)
+    self[king_pos].color == :b ? row = 0 : row = 7
+
+    # Determine Kingside or Queenside castling
+    king_pos.last > rook_pos.last ? dir = 1 : dir = -1
+
+    # See if king can move to castling position
+    dir > 0 ? col_span = (1..3) : col_span = (5..6)
+    raise InvalidMoveError.new("Invalid castle.") if @grid[row][col_span].any?
+
+    col_span = (1..3).to_a.reverse if col_span == (1..3)
+    dupped_board = self.dup
+    col_span.each do |new_col|
+      dupped_board.move!([row, new_col + dir], [row, new_col])
+      if dupped_board.in_check?(self[king_pos].color)
+        raise InvalidMoveError.new("Can't castle through check")
+      end
+    end
+    dir > 0 ? new_king_pos = [row, 2] : new_king_pos = [row, 6]
+    new_rook_pos = [row, new_king_pos.last + dir]
+
+    move!(king_pos, new_king_pos)
+    move!(rook_pos, new_rook_pos)
+  end
+
   def checkmate?(color)
     get_all_color_pieces(color).none? { |piece| piece.valid_moves.any? }
   end

@@ -47,7 +47,12 @@ class Game
       moves_set << input if input
     end
 
-    @board.move(moves_set[0], moves_set[1], @players[0])
+    if @board.castling?(moves_set.first, moves_set.last)
+      @board.castle(moves_set.first, moves_set.last)
+    else
+      @board.move(moves_set[0], moves_set[1], @players[0])
+    end
+
     promotion_piece = @board.promotion
     promote(promotion_piece) if promotion_piece
   end
