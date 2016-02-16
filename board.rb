@@ -6,6 +6,7 @@ require_relative 'bishop'
 require_relative 'queen'
 require_relative 'knight'
 require_relative 'king'
+require_relative 'pawn'
 
 
 class InvalidMoveError < StandardError
@@ -32,6 +33,7 @@ class Board
     (start_pos + end_pos).all? { |coord| coord.between?(0, 7) }
   end
 
+
   def move(start_pos, end_pos)
     begin
       unless self[start_pos] && in_bounds?(start_pos, end_pos)
@@ -40,6 +42,7 @@ class Board
     end
 
     self[end_pos] = self[start_pos]
+    self[end_pos].pos = end_pos
     self[start_pos] = nil
   end
 
@@ -63,6 +66,10 @@ class Board
   end
 
   def populate_pawns(color)
+    color == :b ? row = 1 : row = 6
+    8.times do |col|
+      self[[row, col]] = Pawn.new([row, col], self, color)
+    end
   end
 
 end

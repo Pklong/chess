@@ -33,7 +33,7 @@ module Cursorable
       exit 0
     when :return, :space
       @board[@cursor_pos] ? @selected = true : @selected = false
-      @cursor_pos
+      @move_set << @cursor_pos
     when :left, :right, :up, :down
       update_pos(MOVES[key])
       nil

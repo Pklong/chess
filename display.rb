@@ -5,10 +5,12 @@ require_relative "board"
 class Display
   include Cursorable
 
-  def initialize(board)
+  def initialize(board, debug = false)
     @board = board
     @cursor_pos = [0, 0]
     @selected = false
+    @move_set = []
+    @debug = debug
   end
 
   def build_grid
@@ -32,9 +34,9 @@ class Display
     if [i, j] == @cursor_pos
       bg = :light_red
     elsif (i + j).odd?
-      bg = :white
-    else
       bg = :black
+    else
+      bg = :white
     end
     { background: bg }
   end
@@ -42,15 +44,29 @@ class Display
   def render
     system("clear")
     build_grid.each { |row| puts row.join }
+    puts "Cursor_pos: #{@cursor_pos}"
+    puts "selected: #{@selected}"
+    puts "move_set: #{@move_set}"
+    if @move_set[0]
+      puts "moves for selected piece: #{@board[@move_set[0]].moves}"
+    end
+  end
+
+  def run
+    while true
+      until @move_set.length == 2
+        render
+        get_input
+      end
+
+      @board.move(@move_set[0], @move_set[1])
+      @move_set = []
+    end
+
   end
 end
 b = Board.new
 b.populate
 
-test = Display.new(b)
-result = nil
-
-until result
-  test.render
-  result = test.get_input
-end
+test = Display.new(b, true)
+test.run
